@@ -9,7 +9,7 @@
 		<div class="col-lg-6">
 			<div class="panel panel-default">
 				<div class="panel-body">
-					Ultima Leitura: <span class="badge">
+					Ultima Leituras: <span class="badge">
 						{% if moistureList %}
 								{{moistureList.0.moisture}}
 						
@@ -27,11 +27,11 @@
 					Status Sistema: 
 					
 					{% if Status %}
-							{% if Status.status=1 %}
+							{% ifequal Status.status  1 %}
 					                <span class="badge">Ligado</span>
 							{%else %}
 							        <span class="badge">Desligado</span>
-							{% endif%}	
+							{% endifequal%}
 					{% endif%}
 				</div>
 			</div>
@@ -52,7 +52,6 @@
 						<tr>
 							<td>{{ moisture.moisture }}</td>
 							<td>{{ moisture.date }}</td>
-						
 						</tr>
 					{% endfor %}
 				{%endif%}
@@ -60,8 +59,6 @@
 			</table>
 		</div>
 	</div>
-
-
 {% endblock%}
 
 {% block scripts%}
@@ -72,27 +69,22 @@
 		$(document).ready(function(){
 			getMoisture();
 				//setInterval(getMoisture,5000);
-			
 		});
-		
 		function getMoisture(){
-			
-					$.ajax({
-							type:'POST',
-							url:'getMoisture/',
-							data:{csrfmiddlewaretoken:'{{csrf_token}}',lastID:1}
-							
+		      $.ajax({
+                    type:'POST',
+                    url:'getMoisture/',
+                    data:{csrfmiddlewaretoken:'{{csrf_token}}',lastID:1}
+                  
 					}).done(function(data){
-							if(data!=""){
-									 json=data;
-									 $.each(json,function(idx,obj){
-										 $('#moistureTable tbody').prepend("<tr><td>"+obj.fields.moisture+"</td><td>"+obj.fields.date+"</td></tr>");
-										
-										 });
-									
-							}
+                        if(data!=""){
+                             json=data;
+                             $.each(json,function(idx,obj){
+                                 $('#moistureTable tbody').prepend("<tr><td>"+obj.fields.moisture+"</td><td>"+obj.fields.date+"</td></tr>");
+                             });
+                        }
 					});
-	}
+	    }
 </script>
 
 {%endblock %}

@@ -13,7 +13,7 @@ from irrigation.models import SoilMoistureControl,Status
 
 
 def index(request):
-	
+    teste=1
 	template=loader.get_template('irrigation/index.html')
 
 
@@ -35,10 +35,10 @@ def logs(request):
 	
 	
 def arduinos(request):
-	moistureList=SoilMoistureControl.objects.order_by('-date')[:5]
+	arduinoList=Status.objects.all()
 	template=loader.get_template('irrigation/arduinos.html')
 	context=RequestContext(request,{
-		'moistureList':moistureList
+		'arduinoList':arduinoList
 	})
 
 	return HttpResponse(template.render(context))
