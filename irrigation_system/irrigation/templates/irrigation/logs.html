@@ -9,7 +9,13 @@
 		<div class="col-lg-6">
 			<div class="panel panel-default">
 				<div class="panel-body">
-					Ultima Leitura: <span class="badge">{{ lastmoisture.moisture}}</span>
+					Ultima Leitura: <span class="badge">
+						{% if moistureList %}
+								{{moistureList.0.moisture}}
+						
+						{% else %}
+								Nenhum Registro
+						{%endif%}</span>
 				</div>
 			</div>
 			
@@ -18,7 +24,15 @@
 		<div class="col-lg-6">
 			<div class="panel panel-default">
 				<div class="panel-body">
-					Status Sistema: <span class="badge">Ligado</span>
+					Status Sistema: 
+					
+					{% if Status %}
+							{% if Status.status=1 %}
+					                <span class="badge">Ligado</span>
+							{%else %}
+							        <span class="badge">Desligado</span>
+							{% endif%}	
+					{% endif%}
 				</div>
 			</div>
 			

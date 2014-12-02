@@ -7,16 +7,38 @@ from django.core import serializers
 
 # Create your views here.
 
-from irrigation.models import SoilMoistureControl
+from irrigation.models import SoilMoistureControl,Status
+
+
 
 
 def index(request):
-	moistureList=SoilMoistureControl.objects.order_by('-date')[:5]
-	moistureLast=SoilMoistureControl.objects.order_by('-pk')[0]
+	
 	template=loader.get_template('irrigation/index.html')
+
+
+	return HttpResponse(template)
+
+
+
+def logs(request):
+	moistureList=SoilMoistureControl.objects.order_by('-date')[:5]
+	status= Status.objects.all()[0]
+	
+	template=loader.get_template('irrigation/logs.html')
 	context=RequestContext(request,{
 		'moistureList':moistureList,
-		'lastmoisture':moistureLast,
+		'status':status
+	})
+
+	return HttpResponse(template.render(context))
+	
+	
+def arduinos(request):
+	moistureList=SoilMoistureControl.objects.order_by('-date')[:5]
+	template=loader.get_template('irrigation/arduinos.html')
+	context=RequestContext(request,{
+		'moistureList':moistureList
 	})
 
 	return HttpResponse(template.render(context))

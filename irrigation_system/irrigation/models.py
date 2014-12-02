@@ -6,4 +6,8 @@ from django.db import models
 class SoilMoistureControl(models.Model):
 	moisture= models.IntegerField(default=0)
 	date= models.DateTimeField(auto_now_add=True,blank=True)
-	arduinoID= models.IntegerField(default=0) 
+	
+	
+	
+class Status(models.Model):
+	status = models.IntegerField(default=1)

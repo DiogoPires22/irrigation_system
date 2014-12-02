@@ -8,5 +8,7 @@ urlpatterns = patterns('',
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', views.index,name="index"),
+        url(r'^logs/', views.logs,name="logs"),
+    url(r'^Arduinos/', views.arduinos,name="Arduinos"),
     url(r'^getMoisture', views.getMoisture,name="getMoisture"),
 )
