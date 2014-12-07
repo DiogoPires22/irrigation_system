@@ -33,6 +33,17 @@ def logs(request):
 	
 	
 def arduinos(request):
+	if request.method=='POST':
+		status=request.POST["status"]
+		if status=="1":
+			status=0
+		else:
+			status=1
+		Status.objects.all().update(status=status)
+		
+	
+	
+	
 	arduinoList=Status.objects.all()
 	template=loader.get_template('irrigation/arduinos.html')
 	context=RequestContext(request,{

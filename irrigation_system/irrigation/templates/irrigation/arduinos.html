@@ -16,19 +16,24 @@
 				<tbody>
                   
 				{% if arduinoList %}
+				<form action="/arduinos/" method="POST">
 					{%for arduino in arduinoList%}
 						<tr>
 							<td>Arduino UNO ReV3</td>
 							<td>
+								<input type="hidden" value="{{csrf_token}}" name="csrfmiddlewaretoken"/>
+								<input type="hidden" value="{{arduino.status}}" name="status"/>
+								
                                 {% ifequal arduino.status 1 %}
                                     <button class="btn btn-danger">Desligar</button>
                                 {%else%}
-                                    <button class="btn btn-success">Ligar</button>
+                                    <button type="submit" class="btn btn-success">Ligar</button>
                                 {%endifequal%}
                             </td>
 						
 						</tr>
 					{% endfor %}
+				</form>
 				{%endif%}
 				</tbody>
 			</table>
@@ -38,35 +43,4 @@
 
 {% endblock%}
 
-{% block scripts%}
-<script type="text/javascript">
-	var json;
-	
-	var lastID={{moistureList.0.id}}
-		$(document).ready(function(){
-			getMoisture();
-				//setInterval(getMoisture,5000);
-			
-		});
-		
-		function getMoisture(){
-			
-					$.ajax({
-							type:'POST',
-							url:'getMoisture/',
-							data:{csrfmiddlewaretoken:'{{csrf_token}}',lastID:1}
-							
-					}).done(function(data){
-							if(data!=""){
-									 json=data;
-									 $.each(json,function(idx,obj){
-										 $('#moistureTable tbody').prepend("<tr><td>"+obj.fields.moisture+"</td><td>"+obj.fields.date+"</td></tr>");
-										
-										 });
-									
-							}
-					});
-	}
-</script>
 
-{%endblock %}

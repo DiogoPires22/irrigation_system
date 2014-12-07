@@ -26,13 +26,13 @@
 				<div class="panel-body">
 					Status Sistema: 
 					
-					{% if Status %}
-							{% ifequal Status.status  1 %}
+					<!--{{status.status}}-->
+							{% ifequal status.status  1%}
 					                <span class="badge">Ligado</span>
-							{%else %}
+							{% else %}
 							        <span class="badge">Desligado</span>
 							{% endifequal%}
-					{% endif%}
+				
 				</div>
 			</div>
 			
