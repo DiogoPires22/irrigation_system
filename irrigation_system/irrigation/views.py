@@ -13,11 +13,10 @@ from irrigation.models import SoilMoistureControl,Status
 
 
 def index(request):
-    teste=1
-	template=loader.get_template('irrigation/index.html')
-
-
+	teste=1
+	template=loader.get_template("irrigation/index.html")
 	return HttpResponse(template)
+
 
 
 
@@ -30,7 +29,6 @@ def logs(request):
 		'moistureList':moistureList,
 		'status':status
 	})
-
 	return HttpResponse(template.render(context))
 	
 	
@@ -49,7 +47,7 @@ def getMoisture(request):
 		moistureID=request.POST["lastID"]
 		
 	if moistureID:
-		newMoistures= SoilMoistureControl.objects.filter(id__gt=moistureID).order_by('-date')[:5]
+		newMoistures= SoilMoistureControl.objects.order_by('id').filter(id__gt=moistureID)[:5]
 		return HttpResponse(serializers.serialize("json",newMoistures),content_type="application/json")
 	
 	return HttpResponse("")

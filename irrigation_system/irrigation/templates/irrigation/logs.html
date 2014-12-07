@@ -9,7 +9,7 @@
 		<div class="col-lg-6">
 			<div class="panel panel-default">
 				<div class="panel-body">
-					Ultima Leituras: <span class="badge">
+					Ultima Leitura: <span class="badge" id="lastM">
 						{% if moistureList %}
 								{{moistureList.0.moisture}}
 						
@@ -44,14 +44,21 @@
 			<div class="col-lg-12">
 			<table class="table" id="moistureTable">
 				<thead>
-				<tr> <th>Estado Solo ( % Umidade)</th><th> Data Leitura</th></tr>
+				<tr> <th>Estado Solo</th><th>Retorno sensor</th><th> Data Leitura</th></tr>
 				</thead>
 				<tbody>
 				{% if moistureList %}
 					{%for moisture in moistureList%}
 						<tr>
-							<td>{{ moisture.moisture }}</td>
-							<td>{{ moisture.date }}</td>
+							<td> {% if moisture.moisture > 300 %}
+										Umido
+								{%else%}
+										Seco
+								{%endif%}
+								</td>
+								
+								<td>{{ moisture.moisture }}</td>
+							<td>{{ moisture.date|date:"d-m-Y H:i" }}</td>
 						</tr>
 					{% endfor %}
 				{%endif%}
@@ -68,19 +75,22 @@
 	var lastID={{moistureList.0.id}}
 		$(document).ready(function(){
 			getMoisture();
-				//setInterval(getMoisture,5000);
+				setInterval(getMoisture,5000);
 		});
 		function getMoisture(){
+			console.log(lastID);
 		      $.ajax({
                     type:'POST',
-                    url:'getMoisture/',
-                    data:{csrfmiddlewaretoken:'{{csrf_token}}',lastID:1}
+                    url:'/getMoisture/',
+                    data:{csrfmiddlewaretoken:'{{csrf_token}}',lastID:lastID}
                   
 					}).done(function(data){
                         if(data!=""){
                              json=data;
                              $.each(json,function(idx,obj){
-                                 $('#moistureTable tbody').prepend("<tr><td>"+obj.fields.moisture+"</td><td>"+obj.fields.date+"</td></tr>");
+                                 $('#moistureTable tbody').prepend("<tr><td>"+(obj.fields.moisture >300?"Umido":"Seco")+"</td><td>"+obj.fields.moisture+"</td><td>"+obj.fields.date+"</td></tr>");
+                                 lastID=obj.pk;
+                                 $("#lastM").html(obj.fields.moisture);
                              });
                         }
 					});
